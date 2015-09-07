@@ -3,6 +3,10 @@ name = "emagick-rs"
 version = "0.1.0"
 authors = ["Nathan Fiedler <nathanfiedler@fastmail.fm>"]
 
+[lib]
+name = "emagick_rs"
+crate-type = ["dylib"]
+
 [dependencies.magick_rust]
 git = "https://github.com/nlfiedler/magick-rust.git"
-tag = "0.2.0"
+tag = "0.2.1"
