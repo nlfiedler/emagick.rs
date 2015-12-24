@@ -1,4 +1,5 @@
 # Compiled files
+*.beam
 *.o
 *.so
 *.rlib
