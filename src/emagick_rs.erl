@@ -22,10 +22,14 @@
 -export([image_fit/3]).
 -on_load(init/0).
 
+-define(APPNAME, emagick_rs).
+-define(LIBNAME, libemagick_rs).
+
 init() ->
-	Filename = hd(filelib:wildcard("target/{debug,release}/libemagick_rs*")),
-	Rootname = filename:rootname(Filename),
-    ok = erlang:load_nif(Rootname, 0).
+    % tried using code:priv_dir/1 but it never seemed to work
+    PrivDir = filename:join([filename:dirname(code:which(?APPNAME)), "..", "priv"]),
+    SoName = filename:join(PrivDir, ?LIBNAME),
+    ok = erlang:load_nif(SoName, 0).
 
 image_fit(_Bin, _Width, _Height) ->
     exit(nif_library_not_loaded).

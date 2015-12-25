@@ -1,0 +1,9 @@
+{application, emagick_rs, [
+    {description, "ImageMagick interface"},
+    {vsn, "1.0"},
+    {registered, []},
+    {modules, []},
+    {applications, [kernel, stdlib]},
+    {mod, {emagick_rs, []}},
+    {env, []}
+]}.

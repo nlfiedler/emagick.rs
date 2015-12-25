@@ -19,27 +19,46 @@ extern crate ruster_unsafe;
 extern crate magick_rust;
 
 use ruster_unsafe::*;
-use magick_rust::{/*MagickWand, */magick_wand_genesis, magick_wand_terminus};
+use magick_rust::{MagickWand, magick_wand_genesis, magick_wand_terminus};
+use std::mem::uninitialized;
 
 /// Create NIF module data and init function.
 nif_init!(b"emagick_rs\0", Some(load), None, None, Some(unload),
      nif!(b"image_fit\0", 3, image_fit, ERL_NIF_DIRTY_JOB_CPU_BOUND)
     );
 
+/// Resize the image to fit the given dimensions. Always produces a JPEG.
+/// Arguments are the binary, desired width, and desired height.
+/// The aspect ratio will be maintained.
 extern "C" fn image_fit(env: *mut ErlNifEnv,
-                        _argc: c_int,
-                        _args: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
-    // TODO: initialize a magic wand instance
-    // TODO: load erl binary into wand image
-    // TODO: size the image to fit the given dimensions
-    // TODO: write the image data to a new erl binary
-    // TODO: return the erl binary
+                        argc: c_int,
+                        args: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
     unsafe {
-        enif_make_int(env, 0)
+        let mut width:c_int = uninitialized();
+        let mut height:c_int = uninitialized();
+        let mut bin:ErlNifBinary = uninitialized();
+        if argc == 3 &&
+           0 != enif_get_int(env, *args.offset(1), &mut width) &&
+           0 != enif_get_int(env, *args.offset(2), &mut height) &&
+           0 != enif_inspect_binary(env, *args, &mut bin) {
+            let wand = MagickWand::new();
+            let slice = std::slice::from_raw_parts(bin.data, bin.size as usize);
+            let data = Vec::from(slice);
+            assert!(wand.read_image_blob(data).is_ok());
+            wand.fit(width as usize, height as usize);
+            // for now, write_image_blob() only ever returns Ok
+            let blob = wand.write_image_blob("jpeg").unwrap();
+            let mut out:ERL_NIF_TERM = uninitialized();
+            let buf = enif_make_new_binary(env, blob.len() as u64, &mut out);
+            std::ptr::copy(blob.as_ptr(), buf, blob.len());
+            out
+        } else {
+            enif_make_badarg(env)
+        }
     }
 }
 
-/// Initialize static atom.
+/// Initialize the ImageMagick library.
 extern "C" fn load(_env: *mut ErlNifEnv,
                    _priv_data: *mut *mut c_void,
                    _load_info: ERL_NIF_TERM)-> c_int {
@@ -47,29 +66,8 @@ extern "C" fn load(_env: *mut ErlNifEnv,
     0
 }
 
-/// Does nothing, reports success
+/// Prepare the ImageMagick library for shutdown.
 extern "C" fn unload(_env: *mut ErlNifEnv,
                      _priv_data: *mut c_void) {
     magick_wand_terminus();
 }
-
-//
-// read Erlang binary into image data
-//
-// status=MagickReadImageBlob(wand, data_, size_);
-// if (status == MAGICK_FALSE) {
-//     throw("An error occured");
-// }
-// long int x,y;
-// status=MagickGetImagePage(wand,&width_,&height_,&x,&y);
-// if (status == MAGICK_FALSE) {
-//     throw("An error occured");
-// }
-
-//
-// convert image to final format, convert to Erlang binary
-//
-// new_blob = handle->image->process(eim_format, &new_length);
-// enif_alloc_binary_compat(env, new_length, &new_binary);
-// memcpy(new_binary.data, new_blob, new_length);
-// return enif_make_binary(env, &new_binary);

@@ -10,11 +10,17 @@ OS=$(shell uname -o)
 ifeq ($(OS),Darwin)
 build:
 	cargo rustc -- --codegen link-args='-flat_namespace -undefined suppress'
-	cp target/debug/libemagick_rs.dylib target/debug/libemagick_rs.so
+	mkdir -p priv
+	cp target/debug/libemagick_rs.dylib priv/libemagick_rs.so
 else
 build:
 	cargo build
 endif
+	rebar compile
 
 clean:
+	rebar clean
 	cargo clean
+
+test: build
+	rebar ct

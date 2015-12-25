@@ -1,9 +1,23 @@
 # emagick.rs
 
-## TODO
+A basic (Erlang)[http://www.erlang.org] interface to the (ImageMagick)[http://www.imagemagick.org/] library, via (Rust)[https://www.rust-lang.org] bindings. Currently very few fuctions are exposed, generally only those that are needed for the tanuki project.
 
-1. Develop a Rust NIF wrapper that can be called from Erlang.
-	* See http://goertzenator.github.io/ruster_unsafe/ruster_unsafe/
-1. Write unit tests
-1. Add a license and copyright headers
-1. Test it on lots of images in batches to stress test it; should not crash
+## Requirements
+
+* Erlang/OTP R17|R18
+* (Rebar)[https://github.com/rebar/rebar]
+* Rust (1.3 or higher should work)
+* Cargo
+* ImageMagick (tested with 6.9)
+
+## Building and Testing
+
+The following should clean and build everything from scratch, including downloading dependencies.
+
+```
+$ make clean
+$ make test
+...
+DONE.
+Testing projects.emagick.rs: TEST COMPLETE, 1 ok, 0 failed of 1 test cases
+```
