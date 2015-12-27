@@ -49,7 +49,7 @@ extern "C" fn image_fit(env: *mut ErlNifEnv,
             // for now, write_image_blob() only ever returns Ok
             let blob = wand.write_image_blob("jpeg").unwrap();
             let mut out:ERL_NIF_TERM = uninitialized();
-            let buf = enif_make_new_binary(env, blob.len() as u64, &mut out);
+            let buf = enif_make_new_binary(env, blob.len() as usize, &mut out);
             std::ptr::copy(blob.as_ptr(), buf, blob.len());
             out
         } else {
