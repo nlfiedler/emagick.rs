@@ -38,7 +38,7 @@ test_image_fit(Config) ->
     DataDir = ?config(data_dir, Config),
     ImagePath = filename:join([DataDir, "IMG_5745.JPG"]),
     {ok, ImageData} = file:read_file(ImagePath),
-    Resized = emagick_rs:image_fit(ImageData, 240, 240),
+    {ok, Resized} = emagick_rs:image_fit(ImageData, 240, 240),
     ?assert(is_binary(Resized)),
     ?assertEqual(length(binary_to_list(Resized)), 31907),
     ok.

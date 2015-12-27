@@ -31,5 +31,8 @@ init() ->
     SoName = filename:join(PrivDir, ?LIBNAME),
     ok = erlang:load_nif(SoName, 0).
 
+%
+% @doc Returns {ok, Binary} if successful, and {error, Reason} otherwise.
+%
 image_fit(_Bin, _Width, _Height) ->
     exit(nif_library_not_loaded).
