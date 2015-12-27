@@ -25,8 +25,6 @@
 -include_lib("common_test/include/ct.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
--define(LIBNAME, "libemagick_rs.so").
-
 init_per_suite(Config) ->
     ok = application:load(emagick_rs),
     Config.

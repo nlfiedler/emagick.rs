@@ -3,6 +3,9 @@
 # operating system. For Darwin, we need to flatten the namespace and suppress
 # undefined symbols in order for the linker to succeed.
 #
+# Do not invoke make directly, but rather use rebar for everything, which
+# delegates to make as appropriate.
+#
 
 .PHONY: build clean
 
@@ -16,11 +19,6 @@ else
 build:
 	cargo build
 endif
-	rebar compile
 
 clean:
-	rebar clean
 	cargo clean
-
-test: build
-	rebar ct

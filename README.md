@@ -15,8 +15,9 @@ A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://ww
 The following should clean and build everything from scratch, including downloading dependencies.
 
 ```
-$ make clean
-$ make test
+$ rebar clean
+$ rebar compile
+$ rebar ct
 ...
 DONE.
 Testing projects.emagick.rs: TEST COMPLETE, 1 ok, 0 failed of 1 test cases
