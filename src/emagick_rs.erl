@@ -19,7 +19,7 @@
 %%
 %% -------------------------------------------------------------------
 -module(emagick_rs).
--export([image_fit/3]).
+-export([image_fit/3, image_get_property/2]).
 -on_load(init/0).
 
 -define(APPNAME, emagick_rs).
@@ -32,7 +32,15 @@ init() ->
     ok = erlang:load_nif(SoName, 0).
 
 %
-% @doc Returns {ok, Binary} if successful, and {error, Reason} otherwise.
+% @doc Fits the image to the given dimensions, maintaining aspect ratio.
+%      Returns {ok, Binary} if successful, and {error, Reason} otherwise.
 %
 image_fit(_Bin, _Width, _Height) ->
+    exit(nif_library_not_loaded).
+
+%
+% @doc Retrieves the named property from the given image data.
+%      Returns {ok, Value} if successful, and {error, Reason} otherwise.
+%
+image_get_property(_Bin, _Name) ->
     exit(nif_library_not_loaded).

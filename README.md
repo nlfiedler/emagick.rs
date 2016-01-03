@@ -1,6 +1,6 @@
 # emagick.rs
 
-A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://www.imagemagick.org) library, via [Rust](https://www.rust-lang.org) bindings. Currently very few fuctions are exposed, generally only those that are needed for the tanuki project.
+A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://www.imagemagick.org) library, via [Rust](https://www.rust-lang.org) bindings. Currently very few fuctions are exposed, generally only those that are needed for the [tanuki](https://github.com/nlfiedler/tanuki) project.
 
 ## Requirements
 

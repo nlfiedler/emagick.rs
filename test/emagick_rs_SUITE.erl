@@ -31,7 +31,8 @@ init_per_suite(Config) ->
 
 all() ->
     [
-        test_image_fit
+        test_image_fit,
+        test_image_get_property
     ].
 
 test_image_fit(Config) ->
@@ -40,5 +41,14 @@ test_image_fit(Config) ->
     {ok, ImageData} = file:read_file(ImagePath),
     {ok, Resized} = emagick_rs:image_fit(ImageData, 240, 240),
     ?assert(is_binary(Resized)),
-    ?assertEqual(length(binary_to_list(Resized)), 31907),
+    ?assertEqual(31907, length(binary_to_list(Resized))),
+    ok.
+
+test_image_get_property(Config) ->
+    DataDir = ?config(data_dir, Config),
+    ImagePath = filename:join([DataDir, "IMG_5745.JPG"]),
+    {ok, ImageData} = file:read_file(ImagePath),
+    {ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTime"),
+    ?assert(is_list(Value)),
+    ?assertEqual("2014:04:23 13:33:08", Value),
     ok.
