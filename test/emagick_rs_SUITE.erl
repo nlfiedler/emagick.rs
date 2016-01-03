@@ -48,7 +48,7 @@ test_image_get_property(Config) ->
     DataDir = ?config(data_dir, Config),
     ImagePath = filename:join([DataDir, "IMG_5745.JPG"]),
     {ok, ImageData} = file:read_file(ImagePath),
-    {ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTime"),
+    {ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTimeOriginal"),
     ?assert(is_list(Value)),
     ?assertEqual("2014:04:23 13:33:08", Value),
     ok.
