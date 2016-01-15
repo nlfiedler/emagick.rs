@@ -22,3 +22,21 @@ $ rebar ct
 DONE.
 Testing projects.emagick.rs: TEST COMPLETE, 1 ok, 0 failed of 1 test cases
 ```
+
+## Example
+
+Include as a dependency in your release, using rebar...
+
+```
+{deps, [
+    {emagick_rs, ".*", {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.3.1"}}}
+]}.
+```
+
+Fetching a property from an image...
+
+```
+{ok, ImageData} = file:read_file("IMG_5745.JPG"),
+{ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTimeOriginal").
+% Value: "2014:04:23 13:33:08"
+```
