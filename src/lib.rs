@@ -120,22 +120,28 @@ extern "C" fn unload(_env: *mut ErlNifEnv,
 
 /// Produce a 2-tuple consisting of 'ok' and the given result.
 fn make_ok_result(env: *mut ErlNifEnv, result: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
-    let mut ok_atom:ERL_NIF_TERM = unsafe { uninitialized() };
-    let c_ok_str = CString::new("ok").unwrap();
-    unsafe { enif_make_existing_atom(env, c_ok_str.as_bytes_with_nul().as_ptr(),
-        &mut ok_atom, ErlNifCharEncoding::ERL_NIF_LATIN1) };
-    let tuple_args = unsafe { [ok_atom, *result] };
-    unsafe { enif_make_tuple_from_array(env, tuple_args.as_ptr(), 2) }
+    make_tuple(env, "ok", result)
 }
 
 /// Produce a 2-tuple consisting of 'error' and the given reason.
 fn make_err_result(env: *mut ErlNifEnv, reason: &str) -> ERL_NIF_TERM {
-    let mut err_atom:ERL_NIF_TERM = unsafe { uninitialized() };
-    let c_err_str = CString::new("error").unwrap();
-    unsafe { enif_make_existing_atom(env, c_err_str.as_bytes_with_nul().as_ptr(),
-        &mut err_atom, ErlNifCharEncoding::ERL_NIF_LATIN1) };
     let reason_str = unsafe { enif_make_string_len(env, reason.as_ptr(), reason.len(),
         ErlNifCharEncoding::ERL_NIF_LATIN1) };
-    let tuple_args = [err_atom, reason_str];
+    make_tuple(env, "error", &reason_str)
+}
+
+/// Produce a 2-tuple consisting of the label and the term.
+/// The label is converted to an atom.
+fn make_tuple(env: *mut ErlNifEnv, label: &str, result: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
+    let mut label_atom:ERL_NIF_TERM = unsafe { uninitialized() };
+    let c_label_str = CString::new(label).unwrap();
+    let c_label_nul = c_label_str.as_bytes_with_nul().as_ptr();
+    // Try using an existing atom, but if that fails, create a new one.
+    let atom_exists = unsafe { enif_make_existing_atom(
+        env, c_label_nul, &mut label_atom, ErlNifCharEncoding::ERL_NIF_LATIN1) };
+    if atom_exists == 0 {
+        label_atom = unsafe { enif_make_atom(env, c_label_nul) };
+    }
+    let tuple_args = unsafe { [label_atom, *result] };
     unsafe { enif_make_tuple_from_array(env, tuple_args.as_ptr(), 2) }
 }
