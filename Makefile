@@ -18,6 +18,8 @@ build:
 else
 build:
 	cargo build
+	mkdir -p priv
+	cp target/debug/libemagick_rs.so priv/libemagick_rs.so
 endif
 
 clean:
