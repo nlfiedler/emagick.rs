@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.2] - 2016-02-10
+### Changed
+- Update version of `magick-rust` to 0.3.2.
+
 ## [0.3.1] - 2016-01-14
 ### Changed
 - If `enif_make_existing_atom()` returns `0` then need to call `enif_make_atom()`.
