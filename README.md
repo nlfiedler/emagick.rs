@@ -9,6 +9,7 @@ A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://ww
 * Rust (1.3 or higher should work)
 * Cargo
 * ImageMagick (tested with 6.9)
+    - See the development setup docs in the `magick-rust` project.
 
 ## Building and Testing
 
