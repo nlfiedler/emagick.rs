@@ -5,7 +5,7 @@ A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://ww
 ## Requirements
 
 * Erlang/OTP R17|R18
-* [Rebar](https://github.com/rebar/rebar)
+* [Rebar3](https://github.com/erlang/rebar3) 3.0.0 or higher
 * Rust (1.3 or higher should work)
 * Cargo
 * ImageMagick (tested with 6.9)
@@ -13,15 +13,15 @@ A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://ww
 
 ## Building and Testing
 
-The following should clean and build everything from scratch, including downloading dependencies.
+The following should build and test everything from scratch, including downloading dependencies.
 
 ```
-$ rebar clean
-$ rebar compile
-$ rebar ct
+$ rebar3 ct
 ...
-DONE.
-Testing projects.emagick.rs: TEST COMPLETE, 1 ok, 0 failed of 1 test cases
+===> Running Common Test suites...
+%%% emagick_rs_SUITE ==> test_image_fit: OK
+%%% emagick_rs_SUITE ==> test_image_get_property: OK
+All 2 tests passed.
 ```
 
 ## Example
@@ -30,7 +30,7 @@ Include as a dependency in your release, using rebar...
 
 ```
 {deps, [
-    {emagick_rs, ".*", {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.3.2"}}}
+    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.3.3"}}}
 ]}.
 ```
 

@@ -1,7 +1,7 @@
 %% -*- coding: utf-8 -*-
 %% -------------------------------------------------------------------
 %%
-%% Copyright (c) 2015 Nathan Fiedler
+%% Copyright (c) 2015-2016 Nathan Fiedler
 %%
 %% This file is provided to you under the Apache License,
 %% Version 2.0 (the "License"); you may not use this file
@@ -26,9 +26,17 @@
 -define(LIBNAME, libemagick_rs).
 
 init() ->
-    % tried using code:priv_dir/1 but it never seemed to work
-    PrivDir = filename:join([filename:dirname(code:which(?APPNAME)), "..", "priv"]),
-    SoName = filename:join(PrivDir, ?LIBNAME),
+    SoName = case code:priv_dir(?APPNAME) of
+        {error, bad_name} ->
+            case filelib:is_dir(filename:join(["..", priv])) of
+                true ->
+                    filename:join(["..", priv, ?LIBNAME]);
+                _ ->
+                    filename:join([priv, ?LIBNAME])
+            end;
+        Dir ->
+            filename:join(Dir, ?LIBNAME)
+    end,
     ok = erlang:load_nif(SoName, 0).
 
 %

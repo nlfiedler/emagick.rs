@@ -1,6 +1,6 @@
 [package]
 name = "emagick-rs"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["Nathan Fiedler <nathanfiedler@fastmail.fm>"]
 description = "Erlang interface to ImageMagick via Rust."
 homepage = "https://github.com/nlfiedler/emagick.rs"
