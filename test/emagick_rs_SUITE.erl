@@ -41,7 +41,10 @@ test_image_fit(Config) ->
     {ok, ImageData} = file:read_file(ImagePath),
     {ok, Resized} = emagick_rs:image_fit(ImageData, 240, 240),
     ?assert(is_binary(Resized)),
-    ?assertEqual(31907, length(binary_to_list(Resized))),
+    Length = length(binary_to_list(Resized)),
+    % have to be flexible as size differs from one platform to another
+    ?assert(31000 =< Length),
+    ?assert(Length =< 32000),
     ok.
 
 test_image_get_property(Config) ->
