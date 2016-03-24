@@ -30,7 +30,7 @@ Include as a dependency in your release, using rebar...
 
 ```
 {deps, [
-    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.3.3"}}}
+    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.3.5"}}}
 ]}.
 ```
 

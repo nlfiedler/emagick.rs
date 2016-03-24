@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.5] - 2016-03-23
+### Changed
+- Switch back to original ruster_unsafe crate.
+
+## [0.3.4] - 2016-03-17
+### Changed
+- Fix image resize test to be more flexible.
+
 ## [0.3.3] - 2016-03-14
 ### Changed
 - Upgrade to rebar3 build system.
