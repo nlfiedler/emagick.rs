@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.0] - 2016-03-29
+### Changed
+- Add function to auto-orient images.
+
 ## [0.3.5] - 2016-03-23
 ### Changed
 - Switch back to original ruster_unsafe crate.

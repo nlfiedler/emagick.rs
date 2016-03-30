@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Nathan Fiedler
+ * Copyright 2015-2016 Nathan Fiedler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,8 @@ use libc::c_uchar;
 /// Create NIF module data and init function.
 nif_init!(b"emagick_rs\0", Some(load), None, None, Some(unload),
      nif!(b"image_fit\0", 3, image_fit, ERL_NIF_DIRTY_JOB_CPU_BOUND),
-     nif!(b"image_get_property\0", 2, image_get_property, ERL_NIF_DIRTY_JOB_CPU_BOUND)
+     nif!(b"image_get_property\0", 2, image_get_property, ERL_NIF_DIRTY_JOB_CPU_BOUND),
+     nif!(b"auto_orient\0", 1, auto_orient, ERL_NIF_DIRTY_JOB_CPU_BOUND)
     );
 
 /// Resize the image to fit the given dimensions. Always produces a JPEG.
@@ -99,6 +100,37 @@ extern "C" fn image_get_property(env: *mut ErlNifEnv,
         let value_str = unsafe { enif_make_string_len(env, rvalue.as_ptr(), rvalue.len(),
             ErlNifCharEncoding::ERL_NIF_LATIN1) };
         make_ok_result(env, &value_str)
+    } else {
+        unsafe { enif_make_badarg(env) }
+    }
+}
+
+/// Automatically orient the image so it is suitable for viewing. Always
+/// produces a JPEG. The one argument is the binary image data.
+extern "C" fn auto_orient(env: *mut ErlNifEnv,
+                          argc: c_int,
+                          args: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
+    let mut bin:ErlNifBinary = unsafe { uninitialized() };
+    if argc == 1 &&
+       0 != unsafe { enif_inspect_binary(env, *args, &mut bin) } {
+        let wand = MagickWand::new();
+        let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
+        let data = Vec::from(slice);
+        if wand.read_image_blob(data).is_err() {
+            return make_err_result(env, "unable to read blob");
+        }
+        if !wand.auto_orient() {
+            return make_err_result(env, "unable to orient image");
+        }
+        let blob_result = wand.write_image_blob("jpeg");
+        if blob_result.is_err() {
+            return make_err_result(env, "unable to write blob");
+        }
+        let blob = blob_result.unwrap();
+        let mut bout:ERL_NIF_TERM = unsafe { uninitialized() };
+        let buf = unsafe { enif_make_new_binary(env, blob.len() as usize, &mut bout) };
+        unsafe { std::ptr::copy(blob.as_ptr(), buf, blob.len()) };
+        make_ok_result(env, &bout)
     } else {
         unsafe { enif_make_badarg(env) }
     }

@@ -1,6 +1,6 @@
 [package]
 name = "emagick-rs"
-version = "0.3.5"
+version = "0.4.0"
 authors = ["Nathan Fiedler <nathanfiedler@fastmail.fm>"]
 description = "Erlang interface to ImageMagick via Rust."
 homepage = "https://github.com/nlfiedler/emagick.rs"
@@ -15,7 +15,7 @@ crate-type = ["dylib"]
 
 [dependencies.magick_rust]
 git = "https://github.com/nlfiedler/magick-rust.git"
-tag = "0.3.3"
+tag = "0.4.0"
 
 [dependencies.ruster_unsafe]
 git = "https://github.com/goertzenator/ruster_unsafe.git"

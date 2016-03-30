@@ -1,7 +1,7 @@
 %% -*- coding: utf-8 -*-
 %% -------------------------------------------------------------------
 %%
-%% Copyright (c) 2015 Nathan Fiedler
+%% Copyright (c) 2015-2016 Nathan Fiedler
 %%
 %% This file is provided to you under the Apache License,
 %% Version 2.0 (the "License"); you may not use this file
@@ -32,7 +32,8 @@ init_per_suite(Config) ->
 all() ->
     [
         test_image_fit,
-        test_image_get_property
+        test_image_get_property,
+        test_auto_orient
     ].
 
 test_image_fit(Config) ->
@@ -54,4 +55,16 @@ test_image_get_property(Config) ->
     {ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTimeOriginal"),
     ?assert(is_list(Value)),
     ?assertEqual("2014:04:23 13:33:08", Value),
+    ok.
+
+test_auto_orient(Config) ->
+    DataDir = ?config(data_dir, Config),
+    ImagePath = filename:join([DataDir, "IMG_5745_rotl.JPG"]),
+    {ok, ImageData} = file:read_file(ImagePath),
+    {ok, Oriented} = emagick_rs:auto_orient(ImageData),
+    ?assert(is_binary(Oriented)),
+    Length = length(binary_to_list(Oriented)),
+    % have to be flexible as size differs from one platform to another
+    ?assert(105000 =< Length),
+    ?assert(Length =< 107000),
     ok.

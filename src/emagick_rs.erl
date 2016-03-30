@@ -19,7 +19,7 @@
 %%
 %% -------------------------------------------------------------------
 -module(emagick_rs).
--export([image_fit/3, image_get_property/2]).
+-export([image_fit/3, image_get_property/2, auto_orient/1]).
 -on_load(init/0).
 
 -define(APPNAME, emagick_rs).
@@ -51,4 +51,11 @@ image_fit(_Bin, _Width, _Height) ->
 %      Returns {ok, Value} if successful, and {error, Reason} otherwise.
 %
 image_get_property(_Bin, _Name) ->
+    exit(nif_library_not_loaded).
+
+%
+% @doc Automatically orient the image so it is suitable for viewing.
+%      Returns {ok, Binary} if successful, and {error, Reason} otherwise.
+%
+auto_orient(_Bin) ->
     exit(nif_library_not_loaded).
