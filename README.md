@@ -41,3 +41,7 @@ Fetching a property from an image...
 {ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTimeOriginal").
 % Value: "2014:04:23 13:33:08"
 ```
+
+## Escript Usage
+
+When using this library with an escript, it may be necessary to set the environment variable `NIF_DIR` to the path that contains the `.so` file for emagick.rs, which may look something like `_build/default/lib/emagick_rs/priv`, if you are using rebar3.

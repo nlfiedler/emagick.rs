@@ -19,7 +19,7 @@
 %%
 %% -------------------------------------------------------------------
 -module(emagick_rs).
--export([image_fit/3, image_get_property/2, auto_orient/1]).
+-export([image_fit/3, image_get_property/2, auto_orient/1, requires_orientation/1]).
 -on_load(init/0).
 
 -define(APPNAME, emagick_rs).
@@ -28,14 +28,25 @@
 init() ->
     SoName = case code:priv_dir(?APPNAME) of
         {error, bad_name} ->
-            case filelib:is_dir(filename:join(["..", priv])) of
+            case filelib:is_dir(filename:join("..", priv)) of
                 true ->
                     filename:join(["..", priv, ?LIBNAME]);
                 _ ->
-                    filename:join([priv, ?LIBNAME])
+                    filename:join(priv, ?LIBNAME)
             end;
         Dir ->
-            filename:join(Dir, ?LIBNAME)
+            case filelib:is_dir(Dir) of
+                true ->
+                    filename:join(Dir, ?LIBNAME);
+                _ ->
+                    % Special case for use with escripts, since it seems
+                    % rather difficult to inform erl where the priv_dir for
+                    % this application should be.
+                    case os:getenv("NIF_DIR") of
+                        false -> filename:join(priv, ?LIBNAME);
+                        Path -> filename:join(Path, ?LIBNAME)
+                    end
+            end
     end,
     ok = erlang:load_nif(SoName, 0).
 
@@ -58,4 +69,11 @@ image_get_property(_Bin, _Name) ->
 %      Returns {ok, Binary} if successful, and {error, Reason} otherwise.
 %
 auto_orient(_Bin) ->
+    exit(nif_library_not_loaded).
+
+%
+% @doc Return true if the image requires correction of the orientation,
+%      and false otherwise. If correction is required, use auto_orient/1.
+%
+requires_orientation(_Bin) ->
     exit(nif_library_not_loaded).

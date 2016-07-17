@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.1] - 2016-07-16
+### Changed
+- Add function to indicate if an image requires orientation correction.
+
 ## [0.4.0] - 2016-03-29
 ### Changed
 - Add function to auto-orient images.

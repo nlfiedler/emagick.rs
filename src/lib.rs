@@ -29,6 +29,7 @@ use libc::c_uchar;
 nif_init!(b"emagick_rs\0", Some(load), None, None, Some(unload),
      nif!(b"image_fit\0", 3, image_fit, ERL_NIF_DIRTY_JOB_CPU_BOUND),
      nif!(b"image_get_property\0", 2, image_get_property, ERL_NIF_DIRTY_JOB_CPU_BOUND),
+     nif!(b"requires_orientation\0", 1, requires_orientation, ERL_NIF_DIRTY_JOB_CPU_BOUND),
      nif!(b"auto_orient\0", 1, auto_orient, ERL_NIF_DIRTY_JOB_CPU_BOUND)
     );
 
@@ -105,6 +106,27 @@ extern "C" fn image_get_property(env: *mut ErlNifEnv,
     }
 }
 
+/// Returns true if the image requires auto-orientation, false otherwise.
+/// The one argument is the binary image data.
+extern "C" fn requires_orientation(env: *mut ErlNifEnv,
+                                   argc: c_int,
+                                   args: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
+    let mut bin:ErlNifBinary = unsafe { uninitialized() };
+    if argc == 1 &&
+       0 != unsafe { enif_inspect_binary(env, *args, &mut bin) } {
+        let wand = MagickWand::new();
+        let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
+        let data = Vec::from(slice);
+        if wand.read_image_blob(data).is_err() {
+            return make_err_result(env, "unable to read blob");
+        }
+        let result = wand.requires_orientation();
+        make_boolean(env, result)
+    } else {
+        unsafe { enif_make_badarg(env) }
+    }
+}
+
 /// Automatically orient the image so it is suitable for viewing. Always
 /// produces a JPEG. The one argument is the binary image data.
 extern "C" fn auto_orient(env: *mut ErlNifEnv,
@@ -176,4 +198,22 @@ fn make_tuple(env: *mut ErlNifEnv, label: &str, result: *const ERL_NIF_TERM) -> 
     }
     let tuple_args = unsafe { [label_atom, *result] };
     unsafe { enif_make_tuple_from_array(env, tuple_args.as_ptr(), 2) }
+}
+
+/// Return an atom for either true or false.
+fn make_boolean(env: *mut ErlNifEnv, value: bool) -> ERL_NIF_TERM {
+    let mut label_atom:ERL_NIF_TERM = unsafe { uninitialized() };
+    let c_label_str = if value {
+        CString::new("true").unwrap()
+    } else {
+        CString::new("false").unwrap()
+    };
+    let c_label_nul = c_label_str.as_bytes_with_nul().as_ptr();
+    // Try using an existing atom, but if that fails, create a new one.
+    let atom_exists = unsafe { enif_make_existing_atom(
+        env, c_label_nul, &mut label_atom, ErlNifCharEncoding::ERL_NIF_LATIN1) };
+    if atom_exists == 0 {
+        label_atom = unsafe { enif_make_atom(env, c_label_nul) };
+    }
+    label_atom
 }

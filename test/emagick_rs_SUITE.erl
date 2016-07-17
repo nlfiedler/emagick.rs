@@ -33,7 +33,8 @@ all() ->
     [
         test_image_fit,
         test_image_get_property,
-        test_auto_orient
+        test_auto_orient,
+        test_requires_orientation
     ].
 
 test_image_fit(Config) ->
@@ -67,4 +68,14 @@ test_auto_orient(Config) ->
     % have to be flexible as size differs from one platform to another
     ?assert(105000 =< Length),
     ?assert(Length =< 107000),
+    ok.
+
+test_requires_orientation(Config) ->
+    DataDir = ?config(data_dir, Config),
+    ImagePath = filename:join([DataDir, "IMG_5745.JPG"]),
+    {ok, ImageData} = file:read_file(ImagePath),
+    ?assertNot(emagick_rs:requires_orientation(ImageData)),
+    ImagePathR = filename:join([DataDir, "IMG_5745_rotl.JPG"]),
+    {ok, ImageDataR} = file:read_file(ImagePathR),
+    ?assert(emagick_rs:requires_orientation(ImageDataR)),
     ok.
