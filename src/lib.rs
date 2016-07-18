@@ -15,15 +15,14 @@
  */
 
 #[macro_use]
-extern crate ruster_unsafe;
+extern crate erlang_nif_sys;
 extern crate magick_rust;
 extern crate libc;
 
-use ruster_unsafe::*;
+use erlang_nif_sys::*;
 use magick_rust::{MagickWand, magick_wand_genesis, magick_wand_terminus};
 use std::ffi::CString;
 use std::mem::uninitialized;
-use libc::c_uchar;
 
 /// Create NIF module data and init function.
 nif_init!(b"emagick_rs\0", Some(load), None, None, Some(unload),
@@ -49,10 +48,10 @@ extern "C" fn image_fit(env: *mut ErlNifEnv,
         let wand = MagickWand::new();
         let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
         let data = Vec::from(slice);
-        if wand.read_image_blob(data).is_err() {
+        if wand.read_image_blob(&data).is_err() {
             return make_err_result(env, "unable to read blob");
         }
-        wand.fit(width as usize, height as usize);
+        wand.fit(width as u64, height as u64);
         let blob_result = wand.write_image_blob("jpeg");
         if blob_result.is_err() {
             return make_err_result(env, "unable to write blob");
@@ -77,7 +76,7 @@ extern "C" fn image_get_property(env: *mut ErlNifEnv,
         let wand = MagickWand::new();
         let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
         let data = Vec::from(slice);
-        if wand.read_image_blob(data).is_err() {
+        if wand.read_image_blob(&data).is_err() {
             return make_err_result(env, "unable to read blob");
         }
         // need to allocate the space for the incoming string
@@ -117,7 +116,7 @@ extern "C" fn requires_orientation(env: *mut ErlNifEnv,
         let wand = MagickWand::new();
         let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
         let data = Vec::from(slice);
-        if wand.read_image_blob(data).is_err() {
+        if wand.read_image_blob(&data).is_err() {
             return make_err_result(env, "unable to read blob");
         }
         let result = wand.requires_orientation();
@@ -138,7 +137,7 @@ extern "C" fn auto_orient(env: *mut ErlNifEnv,
         let wand = MagickWand::new();
         let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
         let data = Vec::from(slice);
-        if wand.read_image_blob(data).is_err() {
+        if wand.read_image_blob(&data).is_err() {
             return make_err_result(env, "unable to read blob");
         }
         if !wand.auto_orient() {
