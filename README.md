@@ -4,11 +4,15 @@ A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://ww
 
 ## Requirements
 
-* Erlang/OTP R17|R18
+* Erlang/OTP R17 or higher
+    - Requires dirty scheduler support
+    - Homebrew: `brew install erlang --with-dirty-schedulers`
 * [Rebar3](https://github.com/erlang/rebar3) 3.0.0 or higher
 * Rust (1.3 or higher should work)
 * Cargo
-* ImageMagick (tested with 6.9)
+* ImageMagick 6.9
+    - May not work with earlier versions.
+    - Does not compile against 7.0 due to incompatible API changes.
     - See the development setup docs in the `magick-rust` project.
 
 ## Building and Testing
