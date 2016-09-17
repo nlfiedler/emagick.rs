@@ -38,6 +38,8 @@ Include as a dependency in your release, using rebar...
 ]}.
 ```
 
+Be sure to include `emagick_rs` in the `included_applications` list of your application configuration before building a release.
+
 Fetching a property from an image...
 
 ```
