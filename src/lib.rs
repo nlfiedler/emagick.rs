@@ -51,7 +51,7 @@ extern "C" fn image_fit(env: *mut ErlNifEnv,
         if wand.read_image_blob(&data).is_err() {
             return make_err_result(env, "unable to read blob");
         }
-        wand.fit(width as u64, height as u64);
+        wand.fit(width as usize, height as usize);
         let blob_result = wand.write_image_blob("jpeg");
         if blob_result.is_err() {
             return make_err_result(env, "unable to write blob");

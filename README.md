@@ -21,11 +21,14 @@ The following should build and test everything from scratch, including downloadi
 
 ```
 $ rebar3 ct
-...
+===> Verifying dependencies...
+===> Compiling emagick_rs
 ===> Running Common Test suites...
 %%% emagick_rs_SUITE ==> test_image_fit: OK
 %%% emagick_rs_SUITE ==> test_image_get_property: OK
-All 2 tests passed.
+%%% emagick_rs_SUITE ==> test_auto_orient: OK
+%%% emagick_rs_SUITE ==> test_requires_orientation: OK
+All 4 tests passed.
 ```
 
 ## Example
@@ -34,7 +37,7 @@ Include as a dependency in your release, using rebar...
 
 ```
 {deps, [
-    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.4.2"}}}
+    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.4.3"}}}
 ]}.
 ```
 

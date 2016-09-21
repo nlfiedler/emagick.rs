@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.3] - 2016-09-20
+### Changed
+- Upgrade dependencies: magick-rust.
+
 ## [0.4.2] - 2016-07-17
 ### Changed
 - Upgrade dependencies: magick-rust and erlang_nif-sys (née ruster_unsafe).
