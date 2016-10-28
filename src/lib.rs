@@ -26,10 +26,15 @@ use std::mem::uninitialized;
 
 /// Create NIF module data and init function.
 nif_init!(b"emagick_rs\0", Some(load), None, None, Some(unload),
-     nif!(b"image_fit\0", 3, image_fit, ERL_NIF_DIRTY_JOB_CPU_BOUND),
-     nif!(b"image_get_property\0", 2, image_get_property, ERL_NIF_DIRTY_JOB_CPU_BOUND),
-     nif!(b"requires_orientation\0", 1, requires_orientation, ERL_NIF_DIRTY_JOB_CPU_BOUND),
-     nif!(b"auto_orient\0", 1, auto_orient, ERL_NIF_DIRTY_JOB_CPU_BOUND)
+     //
+     // Ideally these would all have the ERL_NIF_DIRTY_JOB_CPU_BOUND flag
+     // but support for dirty schedulers is still experimental and not
+     // available in all distributions (especially FreeBSD).
+     //
+     nif!(b"image_fit\0", 3, image_fit, 0),
+     nif!(b"image_get_property\0", 2, image_get_property, 0),
+     nif!(b"requires_orientation\0", 1, requires_orientation, 0),
+     nif!(b"auto_orient\0", 1, auto_orient, 0)
     );
 
 /// Resize the image to fit the given dimensions. Always produces a JPEG.

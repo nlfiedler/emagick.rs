@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.4] - 2016-10-27
+### Changed
+- Upgrade dependencies: magick-rust and erlang_nif-sys.
+- Remove the dirty CPU scheduler flags since it is currently a hindrance.
+
 ## [0.4.3] - 2016-09-20
 ### Changed
 - Upgrade dependencies: magick-rust.

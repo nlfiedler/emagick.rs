@@ -1,12 +1,10 @@
 # emagick.rs
 
-A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://www.imagemagick.org) library, via [Rust](https://www.rust-lang.org) bindings. Currently very few fuctions are exposed, generally only those that are needed for the [tanuki](https://github.com/nlfiedler/tanuki) project.
+A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://www.imagemagick.org) library, via [Rust](https://www.rust-lang.org) bindings. Currently very few functions are exposed, generally only those that are needed for the [tanuki](https://github.com/nlfiedler/tanuki) project.
 
 ## Requirements
 
 * Erlang/OTP R17 or higher
-    - Requires dirty scheduler support
-    - Homebrew: `brew install erlang --with-dirty-schedulers`
 * [Rebar3](https://github.com/erlang/rebar3) 3.0.0 or higher
 * Rust (1.3 or higher should work)
 * Cargo
@@ -37,7 +35,7 @@ Include as a dependency in your release, using rebar...
 
 ```
 {deps, [
-    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.4.3"}}}
+    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.4.4"}}}
 ]}.
 ```
 
@@ -54,3 +52,7 @@ Fetching a property from an image...
 ## Escript Usage
 
 When using this library with an escript, it may be necessary to set the environment variable `NIF_DIR` to the path that contains the `.so` file for emagick.rs, which may look something like `_build/default/lib/emagick_rs/priv`, if you are using rebar3.
+
+## Dirty Scheduler Support
+
+Technically the functions in this library are CPU intensive, since they are processing image files and that takes a non-trivial amount of time. However, support for dirty CPU schedulers in Erlang 19 has been marked as experimental, and as such is often not available with a base installation. When this status changes, the dirty CPU flags will be added back to the NIF function definitions.
