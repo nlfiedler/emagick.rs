@@ -1,7 +1,7 @@
 %% -*- coding: utf-8 -*-
 %% -------------------------------------------------------------------
 %%
-%% Copyright (c) 2015-2016 Nathan Fiedler
+%% Copyright (c) 2015-2017 Nathan Fiedler
 %%
 %% This file is provided to you under the Apache License,
 %% Version 2.0 (the "License"); you may not use this file
@@ -27,6 +27,10 @@
 
 init_per_suite(Config) ->
     ok = application:load(emagick_rs),
+    Config.
+
+% So this has to be defined now?
+end_per_suite(Config) ->
     Config.
 
 all() ->

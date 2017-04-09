@@ -1,6 +1,6 @@
 [package]
 name = "emagick-rs"
-version = "0.4.4"
+version = "0.4.5"
 authors = ["Nathan Fiedler <nathanfiedler@fastmail.fm>"]
 description = "Erlang interface to ImageMagick via Rust."
 homepage = "https://github.com/nlfiedler/emagick.rs"
@@ -13,13 +13,7 @@ license = "Apache-2.0"
 name = "emagick_rs"
 crate-type = ["dylib"]
 
-[dependencies.magick_rust]
-git = "https://github.com/nlfiedler/magick-rust.git"
-tag = "0.6.1"
-
-[dependencies.erlang_nif-sys]
-git = "https://github.com/goertzenator/erlang_nif-sys.git"
-tag = "0.5.3"
-
 [dependencies]
 libc = ">=0.2"
+magick_rust = "0.6.4"
+erlang_nif-sys = "0.6.1"
