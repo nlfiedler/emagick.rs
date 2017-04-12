@@ -70,8 +70,8 @@ test_auto_orient(Config) ->
     ?assert(is_binary(Oriented)),
     Length = length(binary_to_list(Oriented)),
     % have to be flexible as size differs from one platform to another
-    ?assert(105000 =< Length),
-    ?assert(Length =< 107000),
+    ?assert(100000 =< Length),
+    ?assert(Length =< 110000),
     ok.
 
 test_requires_orientation(Config) ->
