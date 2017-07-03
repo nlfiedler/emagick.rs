@@ -1,6 +1,6 @@
 {application, emagick_rs, [
     {description, "ImageMagick interface"},
-    {vsn, "0.4.5"},
+    {vsn, "0.4.6"},
     {registered, []},
     {modules, []},
     {applications, [

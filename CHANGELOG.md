@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.6] - 2017-07-03
+### Changed
+- Upgrade erlang_nif-sys to support Erlang/OTP 20.
+
 ## [0.4.5] - 2017-04-09
 ### Changed
 - Upgrade dependencies: magick-rust and erlang_nif-sys.
