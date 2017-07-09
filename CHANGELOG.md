@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.7] - 2017-07-08
+### Changed
+- Upgrade magick_rust to version 0.6.6
+
 ## [0.4.6] - 2017-07-03
 ### Changed
 - Upgrade erlang_nif-sys to support Erlang/OTP 20.
