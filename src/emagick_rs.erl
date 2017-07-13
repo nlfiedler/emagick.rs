@@ -1,7 +1,7 @@
 %% -*- coding: utf-8 -*-
 %% -------------------------------------------------------------------
 %%
-%% Copyright (c) 2015-2016 Nathan Fiedler
+%% Copyright (c) 2015-2017 Nathan Fiedler
 %%
 %% This file is provided to you under the Apache License,
 %% Version 2.0 (the "License"); you may not use this file
@@ -20,6 +20,7 @@
 %% -------------------------------------------------------------------
 -module(emagick_rs).
 -export([image_fit/3, image_get_property/2, auto_orient/1, requires_orientation/1]).
+-export([image_get_format/1]).
 -on_load(init/0).
 
 -define(APPNAME, emagick_rs).
@@ -62,6 +63,13 @@ image_fit(_Bin, _Width, _Height) ->
 %      Returns {ok, Value} if successful, and {error, Reason} otherwise.
 %
 image_get_property(_Bin, _Name) ->
+    exit(nif_library_not_loaded).
+
+% @doc
+%
+% Return the image format as a string, such as 'JPEG' or 'PNG'.
+%
+image_get_format(_Bin) ->
     exit(nif_library_not_loaded).
 
 %

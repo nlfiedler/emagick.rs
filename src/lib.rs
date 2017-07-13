@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 Nathan Fiedler
+ * Copyright 2015-2017 Nathan Fiedler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ nif_init!(b"emagick_rs\0", Some(load), None, None, Some(unload),
      //
      nif!(b"image_fit\0", 3, image_fit, 0),
      nif!(b"image_get_property\0", 2, image_get_property, 0),
+     nif!(b"image_get_format\0", 1, image_get_format, 0),
      nif!(b"requires_orientation\0", 1, requires_orientation, 0),
      nif!(b"auto_orient\0", 1, auto_orient, 0)
     );
@@ -98,6 +99,32 @@ extern "C" fn image_get_property(env: *mut ErlNifEnv,
             return make_err_result(env, "invalid name");
         }
         let value = wand.get_image_property(rname.unwrap());
+        if value.is_err() {
+            return make_err_result(env, value.unwrap_err());
+        }
+        let rvalue = value.unwrap();
+        let value_str = unsafe { enif_make_string_len(env, rvalue.as_ptr(), rvalue.len(),
+            ErlNifCharEncoding::ERL_NIF_LATIN1) };
+        make_ok_result(env, &value_str)
+    } else {
+        unsafe { enif_make_badarg(env) }
+    }
+}
+
+/// Retrieve the format from the given image data, such as 'JPEG' or 'PNG'.
+/// Returns {ok, Data}, or {error, Reason} if an error occurs.
+extern "C" fn image_get_format(env: *mut ErlNifEnv,
+                               argc: c_int,
+                               args: *const ERL_NIF_TERM) -> ERL_NIF_TERM {
+    let mut bin:ErlNifBinary = unsafe { uninitialized() };
+    if argc == 1 && 0 != unsafe { enif_inspect_binary(env, *args, &mut bin) } {
+        let wand = MagickWand::new();
+        let slice = unsafe { std::slice::from_raw_parts(bin.data, bin.size as usize) };
+        let data = Vec::from(slice);
+        if wand.read_image_blob(&data).is_err() {
+            return make_err_result(env, "unable to read blob");
+        }
+        let value = wand.get_image_format();
         if value.is_err() {
             return make_err_result(env, value.unwrap_err());
         }

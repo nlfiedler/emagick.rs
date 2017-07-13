@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.8] - 2017-07-12
+### Changed
+- Add `image_get_format/1` function to return image format.
+
 ## [0.4.7] - 2017-07-08
 ### Changed
 - Upgrade magick_rust to version 0.6.6

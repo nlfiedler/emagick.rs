@@ -37,6 +37,7 @@ all() ->
     [
         test_image_fit,
         test_image_get_property,
+        test_image_get_format,
         test_auto_orient,
         test_requires_orientation
     ].
@@ -60,6 +61,15 @@ test_image_get_property(Config) ->
     {ok, Value} = emagick_rs:image_get_property(ImageData, "exif:DateTimeOriginal"),
     ?assert(is_list(Value)),
     ?assertEqual("2014:04:23 13:33:08", Value),
+    ok.
+
+test_image_get_format(Config) ->
+    DataDir = ?config(data_dir, Config),
+    ImagePath = filename:join([DataDir, "IMG_5745.JPG"]),
+    {ok, ImageData} = file:read_file(ImagePath),
+    {ok, Value} = emagick_rs:image_get_format(ImageData),
+    ?assert(is_list(Value)),
+    ?assertEqual("JPEG", Value),
     ok.
 
 test_auto_orient(Config) ->
