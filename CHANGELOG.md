@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.9] - 2017-07-14
+### Changed
+- Fix `image_fit/3`, `auto_orient/1` to use original image format, not assume "jpeg".
+
 ## [0.4.8] - 2017-07-12
 ### Changed
 - Add `image_get_format/1` function to return image format.

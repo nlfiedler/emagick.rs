@@ -57,8 +57,12 @@ extern "C" fn image_fit(env: *mut ErlNifEnv,
         if wand.read_image_blob(&data).is_err() {
             return make_err_result(env, "unable to read blob");
         }
+        let image_format = wand.get_image_format();
+        if image_format.is_err() {
+            return make_err_result(env, "unable to read image format");
+        }
         wand.fit(width as usize, height as usize);
-        let blob_result = wand.write_image_blob("jpeg");
+        let blob_result = wand.write_image_blob(image_format.unwrap().as_str());
         if blob_result.is_err() {
             return make_err_result(env, "unable to write blob");
         }
@@ -175,7 +179,11 @@ extern "C" fn auto_orient(env: *mut ErlNifEnv,
         if !wand.auto_orient() {
             return make_err_result(env, "unable to orient image");
         }
-        let blob_result = wand.write_image_blob("jpeg");
+        let image_format = wand.get_image_format();
+        if image_format.is_err() {
+            return make_err_result(env, "unable to read image format");
+        }
+        let blob_result = wand.write_image_blob(image_format.unwrap().as_str());
         if blob_result.is_err() {
             return make_err_result(env, "unable to write blob");
         }
