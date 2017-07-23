@@ -7,6 +7,5 @@
         kernel,
         stdlib
     ]},
-    {mod, {emagick_rs, []}},
     {env, []}
 ]}.
