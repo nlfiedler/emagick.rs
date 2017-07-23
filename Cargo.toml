@@ -11,7 +11,7 @@ license = "Apache-2.0"
 
 [lib]
 name = "emagick_rs"
-crate-type = ["dylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 libc = ">=0.2"
