@@ -29,6 +29,8 @@ $ rebar3 ct
 All 4 tests passed.
 ```
 
+N.B. Do _not_ use `cargo` to build the library since this is not truly a Rust library, it is a hybrid of both Erlang and Rust. Extra steps are needed, depending on the platform, to successfully build the library. These steps are already handled by the `rebar.config` file.
+
 ## Example
 
 Include as a dependency in your release, using rebar...
