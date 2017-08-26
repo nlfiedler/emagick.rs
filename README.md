@@ -6,11 +6,10 @@ A basic [Erlang](http://www.erlang.org) interface to the [ImageMagick](http://ww
 
 * Erlang/OTP R17 or higher
 * [Rebar3](https://github.com/erlang/rebar3) 3.0.0 or higher
-* Rust (1.3 or higher should work)
-* Cargo
-* ImageMagick 6.9
-    - May not work with earlier versions.
-    - Does not compile against 7.0 due to incompatible API changes.
+* Rust (1.19 or higher should work)
+    - This is due mostly to the use of [bindgen](https://crates.io/crates/bindgen)
+* ImageMagick 7.0.x
+    - Does _not_ work with the 6.x versions due to backward incompatible changes.
     - See the development setup docs in the `magick-rust` project.
 
 ## Building and Testing
@@ -37,7 +36,7 @@ Include as a dependency in your release, using rebar...
 
 ```
 {deps, [
-    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.4.9"}}}
+    {emagick_rs, {git, "https://github.com/nlfiedler/emagick.rs", {tag, "0.5.0"}}}
 ]}.
 ```
 

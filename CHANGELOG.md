@@ -2,13 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
+This file follows the convention described at
+[Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
+
+## [0.5.0] - 2017-08-26
+### Changed
+- Upgrade magick_rust to 0.7.0, the latest release.
+- Now requires ImageMagick 7.0.x, so bumping the minor version.
 
 ## [0.4.9] - 2017-07-14
 ### Changed
 - Fix `image_fit/3`, `auto_orient/1` to use original image format, not assume "jpeg".
 
 ## [0.4.8] - 2017-07-12
-### Changed
+### Added
 - Add `image_get_format/1` function to return image format.
 
 ## [0.4.7] - 2017-07-08
@@ -37,11 +44,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgrade dependencies: magick-rust and erlang_nif-sys (née ruster_unsafe).
 
 ## [0.4.1] - 2016-07-16
-### Changed
+### Added
 - Add function to indicate if an image requires orientation correction.
 
 ## [0.4.0] - 2016-03-29
-### Changed
+### Added
 - Add function to auto-orient images.
 
 ## [0.3.5] - 2016-03-23
@@ -66,7 +73,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - If `enif_make_existing_atom()` returns `0` then need to call `enif_make_atom()`.
 
 ## [0.3.0] - 2016-01-02
-### Changed
+### Added
 - Add `image_get_property()` function to retrieve, for example, EXIF data.
 
 ## [0.2.0] - 2015-12-27
